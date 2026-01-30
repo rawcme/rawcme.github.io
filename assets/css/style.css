@@ -24,11 +24,14 @@ body.sub {
   flex-direction: column;
 }
 
+body.sub h1, body.sub h2 {
+  margin-top: 0;
+}
+
 body.sub h1 {
   font-size: 2em;
 }
 
 body.sub h2 {
-  margin-top: 0;
   font-size: 1.5em;
 }
