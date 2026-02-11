@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GSAP 3D Loader</title>
+
+<!-- GSAP CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  height: 100vh;
+  overflow: hidden;
+  color: white;
+}
+
+/* ===== LOADER OVERLAY ===== */
+#loader {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at center, #111, #000);
+  z-index: 9999;
+  perspective: 1000px;
+}
+
+/* ===== 3D CUBE ===== */
+.cube {
+  width: 80px;
+  height: 80px;
+  position: relative;
+  transform-style: preserve-3d;
+  transform: rotateX(-30deg) rotateY(45deg);
+}
+
+.face {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.2);
+  backdrop-filter: blur(10px);
+}
+
+/* Cube faces */
+.front  { transform: translateZ(40px); }
+.back   { transform: rotateY(180deg) translateZ(40px); }
+.left   { transform: rotateY(-90deg) translateZ(40px); }
+.right  { transform: rotateY(90deg) translateZ(40px); }
+.top    { transform: rotateX(90deg) translateZ(40px); }
+.bottom { transform: rotateX(-90deg) translateZ(40px); }
+
+/* ===== MAIN CONTENT ===== */
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  text-align: center;
+}
+
+h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+button {
+  padding: 12px 25px;
+  border-radius: 30px;
+  border: none;
+  background: white;
+  color: #2c5364;
+  font-weight: bold;
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="cube">
+    <div class="face front"></div>
+    <div class="face back"></div>
+    <div class="face left"></div>
+    <div class="face right"></div>
+    <div class="face top"></div>
+    <div class="face bottom"></div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="container">
+  <h1>Professional GSAP Animation</h1>
+  <p>3D Glass Loader + Smooth Reveal</p>
+  <button>Explore</button>
+</div>
+
+<script>
+  // ===== 3D CONTINUOUS ROTATION =====
+  gsap.to(".cube", {
+    rotationX: 360,
+    rotationY: 360,
+    duration: 3,
+    ease: "power1.inOut",
+    repeat: -1
+  });
+
+  // ===== LOADER EXIT TIMELINE =====
+  window.addEventListener("load", () => {
+
+    const tl = gsap.timeline();
+
+    tl.to(".cube", {
+        scale: 1.5,
+        duration: 0.8,
+        ease: "power2.out"
+      })
+      .to(".cube", {
+        opacity: 0,
+        duration: 0.5
+      })
+      .to("#loader", {
+        opacity: 0,
+        duration: 0.8,
+        onComplete: () => {
+          document.getElementById("loader").style.display = "none";
+        }
+      })
+      .to(".container", {
+        opacity: 1,
+        y: -20,
+        duration: 1,
+        ease: "power3.out"
+      });
+
+  });
+</script>
+
+</body>
+</html>
